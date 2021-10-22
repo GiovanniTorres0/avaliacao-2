@@ -1,0 +1,84 @@
+package Caixa;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.sql.Date;
+import java.util.Scanner;
+
+public class Produtos {
+
+	private String Nome;
+	private String Descricao;
+	private float Desconto;
+	private Date Datai;
+	private Date Dataf;
+	private String data;
+
+	public String getNome() {
+		return Nome;
+	}
+
+	public void setNome(String nome) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Digite o nome do produto");
+		nome = sc.next();
+		this.Nome = nome;
+		sc.close();
+	}
+
+	public String getDescricao() {
+		return Descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Digite a descricao desejada do produto");
+		descricao = sc.next();
+		
+		Descricao = descricao;
+		sc.close();
+
+	}
+
+	public float getDesconto() {
+		return Desconto;
+	}
+
+	public void setDesconto(float desconto) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Digite o desconto que quer cadastrar");
+		desconto = sc.nextFloat();
+		this.Desconto = desconto;
+		sc.close();
+	}
+
+	public java.sql.Date setDatai() throws ParseException {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Digite a data de entrada");
+		data = sc.next();
+		Date date = Date.valueOf(data);
+		Datai = date;
+		sc.close();
+		return Datai;
+	}
+
+	public java.sql.Date setDataf() throws ParseException {
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("Digite a data de saida");
+		data = sc.next();
+		Date date = Date.valueOf(data);
+		Dataf = date;
+		sc.close();
+		return Dataf;
+	}
+
+	public java.sql.Date getDatai() {
+		return Datai;
+	}
+
+	public java.sql.Date getDataf() {
+		return Dataf;
+	}
+
+}

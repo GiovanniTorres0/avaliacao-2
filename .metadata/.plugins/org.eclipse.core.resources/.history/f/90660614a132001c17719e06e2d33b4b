@@ -1,0 +1,169 @@
+package Caixa;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+import java.sql.Date;
+
+public class Main {
+
+	public static void main(String[] args) throws SQLException {
+		// TODO Auto-generated method stub
+
+		CriaConexao criaConexao = new CriaConexao();
+		Connection connection = criaConexao.Conexao();
+
+		Menu menu = new Menu();
+		Produtos prod = new Produtos();
+
+		int opcao;
+		int lastid = criaConexao.getLastId();
+		String variavel = "";
+
+		float Num = 10;
+
+		try (Scanner scanner = new Scanner(System.in)) {
+			do {
+				opcao = menu.menu(scanner);
+				switch (opcao) {
+
+				case 1:
+
+					for (int i = 0; i < 3; i++) {
+
+						System.out.println("Você escolheu 1");
+						prod.setNome(variavel);
+						prod.setDescricao();
+						prod.setDesconto(Num);
+						prod.setDatai();
+						prod.setDataf();
+
+						PreparedStatement stm = connection.prepareStatement(
+								"INSERT INTO PRODUTO (nome, descricao, desconto, data_inicio, data_fim) VALUES (?, ?, ?, ?, ?)",
+								Statement.RETURN_GENERATED_KEYS);
+
+						stm.setString(1, prod.getNome());
+						stm.setString(2, prod.setDescricao());
+						stm.setDouble(3, prod.getDesconto());
+						stm.setDate(4, prod.getDatai());
+						stm.setDate(5, prod.getDataf());
+
+						stm.execute();
+
+						ResultSet rst = stm.getGeneratedKeys();
+
+						try {
+							while (rst.next()) {
+								Integer id = rst.getInt(1);
+								System.out.println("O id criado foi: " + id);
+								lastid = criaConexao.getLastId();
+								System.out.println(lastid);
+							}
+						} catch (Exception e) {
+							System.out.println(e.getMessage());
+						}
+					}
+					connection.close();
+					break;
+				case 2:
+
+					System.out.println("Você escolheu 2");
+
+					prod.setNome(variavel);
+					prod.setDescricao();
+					prod.setDesconto(Num);
+					prod.setDatai();
+					prod.setDataf();
+
+					lastid = lastid - 2;
+
+					PreparedStatement stm = connection.prepareStatement(
+							"UPDATE TABLE PRODUTO (nome, descricao, desconto, data_inicio, data_fim) VALUES (?, ?, ?, ?, ?) WHERE id=(?)");
+
+					stm.setString(1, prod.getNome());
+					stm.setString(2, prod.setDescricao());
+					stm.setDouble(3, prod.getDesconto());
+					stm.setObject(4, prod.getDatai());
+					stm.setObject(5, prod.getDataf());
+					stm.setInt(6, lastid);
+
+					stm.execute();
+
+					connection.close();
+					break;
+				case 3:
+
+					System.out.println("Você escolheu 3");
+
+					lastid = criaConexao.getLastId();
+
+					lastid = lastid - 1;
+
+					stm = connection.prepareStatement("DELETE from PRODUTO WHERE id=" + lastid);
+
+					stm.execute();
+
+					System.out.println("Você deletou o id: " + lastid);
+
+					break;
+
+				case 4:
+
+					System.out.println("\nVocê escolheu 4");
+
+					System.out.println("Digite o id máximo");
+					int idmax = scanner.nextInt();
+					System.out.println("Digite o id mínimo");
+					int idmin = scanner.nextInt();
+
+					stm = connection.prepareStatement(
+							"SELECT (id, nome, descricao, desconto, data_inicio, data_fim) FROM PRODUTO WHERE id >="
+									+ "'" + idmin + "'" + "AND id <= " + "'" + idmax + "'");
+
+					stm.execute();
+
+					ResultSet rst = stm.getResultSet();
+
+					while (rst.next()) {
+
+						Integer id = rst.getInt("id");
+						System.out.println(id);
+						String nome = rst.getString("nome");
+						System.out.println(nome);
+						String descricao = rst.getString("descricao");
+						System.out.println(descricao);
+						Float desconto = rst.getFloat("desconto");
+						System.out.println(desconto);
+						Date data_inicio = rst.getDate("data_inicio");
+						System.out.println(data_inicio);
+						Date data_fim = rst.getDate("data_fim");
+						System.out.println(data_fim);
+
+					}
+
+					connection.close();
+					break;
+				case 0:
+					System.out.println("Você escolheu 0");
+
+					connection.close();
+
+					break;
+				default:
+					System.out.println("Opção errada");
+					connection.close();
+
+					System.out.println("Programa finalizado");
+					break;
+				}
+			} while (opcao != 0);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		prod.fecharscan();
+	}
+	
+}

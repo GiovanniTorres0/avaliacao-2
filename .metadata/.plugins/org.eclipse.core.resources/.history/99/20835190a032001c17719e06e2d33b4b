@@ -1,0 +1,78 @@
+package Caixa;
+
+import java.text.ParseException;
+import java.sql.Date;
+import java.util.Scanner;
+
+public class Produtos {
+
+	private String Nome;
+	private float Desconto;
+	private Date Datai;
+	private Date Dataf;
+	private String data;
+
+	Scanner sc = new Scanner(System.in);
+
+	public String getNome() {
+		return Nome;
+	}
+
+	public java.sql.Date getDatai() {
+		return Datai;
+	}
+
+	public java.sql.Date getDataf() {
+		return Dataf;
+	}
+
+	
+	public float getDesconto() {
+		return Desconto;
+	}
+
+	public void setDesconto(float desconto) {
+		System.out.println("Digite o desconto que quer cadastrar");
+		desconto = sc.nextFloat();
+		this.Desconto = desconto;
+	}
+
+	public String setDescricao() {
+		System.out.println("Digite a descricao desejada do produto");
+		String descricao = "";
+
+		if (sc.hasNextLine()) {
+			descricao = sc.nextLine();
+		}
+
+		return descricao;
+	}
+
+	public void setNome(String nome) {
+		System.out.println("Digite o nome do produto");
+		nome = sc.nextLine();
+		this.Nome = nome;
+	}
+
+	public java.sql.Date setDatai() throws ParseException {
+		System.out.println("Digite a data de entrada\n O padrão de data deve ser (YYYY-MM-DD) Separados por -");
+		data = sc.next();
+		Date date = Date.valueOf(data);
+		Datai = date;
+		return Datai;
+	}
+
+	public java.sql.Date setDataf() throws ParseException {
+		System.out.println("Digite a data de saida\n O padrão de data deve ser (YYYY-MM-DD) Separados por -");
+		data = sc.next();
+		Date date = Date.valueOf(data);
+		Dataf = date;
+		sc.close();
+		return Dataf;
+	}
+
+	public void fecharscan() {
+		sc.close();
+	}
+
+}
