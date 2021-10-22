@@ -21,9 +21,6 @@ public class Main {
 
 		int opcao;
 		int lastid = criaConexao.getLastId();
-		String variavel = "";
-
-		float Num = 10;
 
 		try (Scanner scanner = new Scanner(System.in)) {
 			do {
@@ -32,24 +29,22 @@ public class Main {
 
 				case 1:
 
-					for (int i = 2; i < 3; i++) {
+					for (int i = 0; i < 3; i++) {
 
 						System.out.println("Você escolheu 1");
-						prod.setNome(variavel);
-						prod.setDescricao();
-						prod.setDesconto(Num);
-						prod.setDatai();
-						prod.setDataf();
 
 						PreparedStatement stm = connection.prepareStatement(
 								"INSERT INTO PRODUTO (nome, descricao, desconto, data_inicio, data_fim) VALUES (?, ?, ?, ?, ?)",
 								Statement.RETURN_GENERATED_KEYS);
-
-						stm.setString(1, prod.getNome());
-						stm.setString(2, prod.setDescricao());
-						stm.setDouble(3, prod.getDesconto());
-						stm.setDate(4, prod.getDatai());
-						stm.setDate(5, prod.getDataf());
+						try {
+							stm.setString(1, prod.setNome());
+							stm.setString(2, prod.setDescricao());
+							stm.setFloat(3, prod.setDesconto());
+							stm.setDate(4, prod.setDatai());
+							stm.setDate(5, prod.setDataf());
+						} catch (Exception e) {
+							System.out.println(e.getMessage());
+						}
 
 						stm.execute();
 
@@ -72,23 +67,21 @@ public class Main {
 
 					System.out.println("Você escolheu 2");
 
-					prod.setNome(variavel);
-					prod.setDescricao();
-					prod.setDesconto(Num);
-					prod.setDatai();
-					prod.setDataf();
-
 					lastid = lastid - 2;
 
 					PreparedStatement stm = connection.prepareStatement(
 							"UPDATE PRODUTO  SET nome=?, descricao=?, desconto=?, data_inicio=?, data_fim=? WHERE id = (?)");
 
-					stm.setString(1, prod.getNome());
-					stm.setString(2, prod.setDescricao());
-					stm.setDouble(3, prod.getDesconto());
-					stm.setObject(4, prod.getDatai());
-					stm.setObject(5, prod.getDataf());
-					stm.setInt(6, lastid);
+					try {
+						stm.setString(1, prod.setNome());
+						stm.setString(2, prod.setDescricao());
+						stm.setFloat(3, prod.setDesconto());
+						stm.setDate(4, prod.setDatai());
+						stm.setDate(5, prod.setDataf());
+						stm.setInt(6, lastid);
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+					}
 
 					stm.executeUpdate();
 
@@ -118,39 +111,44 @@ public class Main {
 					int idmax = scanner.nextInt();
 					System.out.println("Digite o id mínimo");
 					int idmin = scanner.nextInt();
+					lastid = criaConexao.getLastId();
+					try {
+						if (idmax < lastid && idmin > 0) {
 
-					stm = connection.prepareStatement(
-							"SELECT id, nome, descricao, desconto, data_inicio, data_fim FROM PRODUTO WHERE id >= (?) AND id <= (?)");
+							stm = connection.prepareStatement(
+									"SELECT id, nome, descricao, desconto, data_inicio, data_fim FROM PRODUTO WHERE id >= (?) AND id <= (?)");
 
-					stm.setInt(1, idmin);
-					stm.setInt(2, idmax);
+							stm.setInt(1, idmin);
+							stm.setInt(2, idmax);
 
-					stm.execute();
+							stm.execute();
 
-					ResultSet rst = stm.getResultSet();
+							ResultSet rst = stm.getResultSet();
 
-					while (rst.next()) {
+							while (rst.next()) {
 
-						Integer id = rst.getInt("id");
-						System.out.println(id);
-						String nome = rst.getString("nome");
-						System.out.println(nome);
-						String descricao = rst.getString("descricao");
-						System.out.println(descricao);
-						Float desconto = rst.getFloat("desconto");
-						System.out.println(desconto);
-						Date data_inicio = rst.getDate("data_inicio");
-						System.out.println(data_inicio);
-						Date data_fim = rst.getDate("data_fim");
-						System.out.println(data_fim);
+								Integer id = rst.getInt("id");
+								System.out.println(id);
+								String nome = rst.getString("nome");
+								System.out.println(nome);
+								String descricao = rst.getString("descricao");
+								System.out.println(descricao);
+								Float desconto = rst.getFloat("desconto");
+								System.out.println(desconto);
+								Date data_inicio = rst.getDate("data_inicio");
+								System.out.println(data_inicio);
+								Date data_fim = rst.getDate("data_fim");
+								System.out.println(data_fim);
 
+							}
+						}
+					} catch (Exception e) {
+						System.out.println("valor inválido");
 					}
 
 					break;
 
 				case 5:
-
-					float dc = 450;
 
 					for (int i = 0; i < 3; i++) {
 						stm = connection.prepareStatement(
@@ -159,7 +157,7 @@ public class Main {
 
 						stm.setString(1, "MESA");
 						stm.setString(2, "REDONDA");
-						stm.setFloat(3, dc);
+						stm.setFloat(3, 350);
 						stm.setString(4, "2022-10-11");
 						stm.setString(5, "2022-10-12");
 
@@ -170,8 +168,6 @@ public class Main {
 					break;
 				case 6:
 
-					dc = 450;
-
 					for (int i = 0; i < 20; i++) {
 						stm = connection.prepareStatement(
 								"INSERT INTO PRODUTO (nome, descricao, desconto, data_inicio, data_fim) VALUES (?, ?, ?, ?, ?)",
@@ -179,7 +175,7 @@ public class Main {
 
 						stm.setString(1, "Teste Cadeira" + (i));
 						stm.setString(2, "Cadeira");
-						stm.setFloat(3, dc);
+						stm.setFloat(3, 450);
 						stm.setString(4, "2022-10-11");
 						stm.setString(5, "2022-10-12");
 
@@ -191,7 +187,7 @@ public class Main {
 
 				case 0:
 					System.out.println("Você escolheu 0");
-
+					System.out.println("Programa finalizado");
 					connection.close();
 
 					break;
@@ -202,9 +198,9 @@ public class Main {
 					System.out.println("Programa finalizado");
 					break;
 				}
-			} while (opcao != 0);
+			} while (opcao != 0 && opcao < 6 && opcao > 0);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("Inválido");;
 		}
 		prod.fecharscan();
 	}

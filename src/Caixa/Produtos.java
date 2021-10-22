@@ -6,35 +6,18 @@ import java.util.Scanner;
 
 public class Produtos {
 
-	private String Nome;
-	private float Desconto;
+
 	private Date Datai;
 	private Date Dataf;
 	private String data;
 
 	Scanner sc = new Scanner(System.in);
 
-	public String getNome() {
-		return Nome;
-	}
 
-	public java.sql.Date getDatai() {
-		return Datai;
-	}
-
-	public java.sql.Date getDataf() {
-		return Dataf;
-	}
-
-	
-	public float getDesconto() {
-		return Desconto;
-	}
-
-	public void setDesconto(float desconto) {
+	public float setDesconto() {
 		System.out.println("Digite o desconto que quer cadastrar");
-		desconto = sc.nextFloat();
-		this.Desconto = desconto;
+		float desconto = sc.nextFloat();
+		return desconto;
 	}
 
 	public String setDescricao() {
@@ -44,14 +27,13 @@ public class Produtos {
 		if (sc.hasNextLine()) {
 			descricao = sc.nextLine();
 		}
-		//Esta tendo retorno da descrição mas se for verificar pelo MYSQL ela não aparece, acredito que seja erro do meu MYSQL...
 		return descricao;
 	}
 
-	public void setNome(String nome) {
+	public String setNome(){
 		System.out.println("Digite o nome do produto");
-		nome = sc.nextLine();
-		this.Nome = nome;
+		String nome = sc.nextLine();
+		return nome;
 	}
 
 	public java.sql.Date setDatai() throws ParseException {
